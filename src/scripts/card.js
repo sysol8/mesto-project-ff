@@ -1,4 +1,4 @@
-function createCard(cardData, deleteCard) {
+export function createCard(cardData, deleteCard) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
@@ -16,7 +16,7 @@ function createCard(cardData, deleteCard) {
   return cardElement;
 }
 
-function deleteCard(cardElement) {
+export function deleteCard(cardElement) {
   cardElement.remove();
 }
 
