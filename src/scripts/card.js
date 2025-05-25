@@ -1,28 +1,21 @@
-export function createCard(cardData, deleteCard) {
-  const cardTemplate = document.querySelector("#card-template").content;
-  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+export function createCard(cardsContainer, cardTemplate, cardContainer, imageContainer, titleContainer, cardImage, cardTitle) {
+  const container = document.querySelector(cardsContainer);
+  const template = document.querySelector(cardTemplate).content;
+  const card = template.querySelector(cardContainer).cloneNode(true);
 
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardTitle = cardElement.querySelector(".card__title");
-  cardImage.src = cardData.link;
-  cardImage.alt = `Изображение места: ${cardData.name}`;
-  cardTitle.textContent = cardData.name;
+  const image = card.querySelector(imageContainer);
+  image.src = cardImage;
+  image.alt = `Изображение места ${cardTitle}`;
 
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", () => {
-    deleteCard(cardElement);
-  });
+  const title = card.querySelector(titleContainer);
+  title.textContent = cardTitle;
+  
+  container.prepend(card);
 
-  return cardElement;
+  /* итого: проще возвращать карточку, а в нужном месте использовать append/prepend */
 }
 
 export function deleteCard(cardElement) {
   cardElement.remove();
 }
 
-const cardsContainer = document.querySelector(".places__list");
-
-initialCards.forEach((cardData) => {
-  const card = createCard(cardData, deleteCard);
-  cardsContainer.append(card);
-});

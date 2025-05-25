@@ -1,21 +1,7 @@
-export function openPopup(buttonOpen, dialog, buttonClose) {
-    buttonOpen.addEventListener("click", () => {
-        dialog.style.display = "flex";
-    })
-
-    closePopup(dialog, buttonClose);
+export function openDialog(dialog, classes) {
+    dialog.classList.add(classes);
 }
 
-function closePopup(dialog, buttonClose) {
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            dialog.style.display = "none";
-        }
-    });
-
-    buttonClose.addEventListener("click", () => {
-        dialog.style.display = "none";
-    })
-
-    /* добавить закрытие по клику вне попапа */
-}
+export function closeDialog(dialog, classes) {
+    dialog.classList.remove(classes);
+};
