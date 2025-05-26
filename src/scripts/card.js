@@ -1,5 +1,10 @@
-export function createCard(cardsContainer, cardTemplate, cardContainer, imageContainer, titleContainer, cardImage, cardTitle) {
-  const container = document.querySelector(cardsContainer);
+export function createCard(
+  cardTemplate, 
+  cardContainer, 
+  imageContainer, 
+  titleContainer, 
+  cardImage, 
+  cardTitle) {
   const template = document.querySelector(cardTemplate).content;
   const card = template.querySelector(cardContainer).cloneNode(true);
 
@@ -10,7 +15,8 @@ export function createCard(cardsContainer, cardTemplate, cardContainer, imageCon
   const title = card.querySelector(titleContainer);
   title.textContent = cardTitle;
   
-  container.prepend(card);
+  console.log(card);
+  return card;
 
   /* итого: проще возвращать карточку, а в нужном месте использовать append/prepend */
 }
