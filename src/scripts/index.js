@@ -28,8 +28,8 @@ const cardsContainer = document.querySelector(".places__list");
 
 (function initCards() {
     initialCards.forEach((card) => {
-        const _card = createCard(card.name, card.link, likeCard, deleteCard);
-        _card.addEventListener("click", openImageDialog(card.name, card.link));
+        const handler = openImageDialog(card.name, card.link);
+        const _card = createCard(card.name, card.link, likeCard, deleteCard, handler);
         cardsContainer.append(_card);
     })
 }()); 

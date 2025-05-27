@@ -10,7 +10,7 @@ export function deleteCard(e) {
   cardElement.remove();
 }
 
-export function createCard(name, link, likeHandler, deleteHandler) {
+export function createCard(name, link, likeHandler, deleteHandler, imageClickHandler) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
   const likeButton = cardElement.querySelector(".card__like-button");
@@ -25,6 +25,7 @@ export function createCard(name, link, likeHandler, deleteHandler) {
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = link;
   cardImage.alt = `Изображение места ${name}`;
+  cardImage.addEventListener("click", imageClickHandler);
 
   return cardElement;
 }
