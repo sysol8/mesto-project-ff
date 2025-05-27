@@ -1,27 +1,31 @@
-export function createCard(
-  cardTemplate, 
-  cardContainer, 
-  imageContainer, 
-  titleContainer, 
-  cardImage, 
-  cardTitle) {
-  const template = document.querySelector(cardTemplate).content;
-  const card = template.querySelector(cardContainer).cloneNode(true);
+const cardTemplate = document.querySelector("#card-template").content;
 
-  const image = card.querySelector(imageContainer);
-  image.src = cardImage;
-  image.alt = `Изображение места ${cardTitle}`;
+export function likeCard(e) {
+  const likeButton = e.currentTarget;
+  likeButton.classList.toggle("card__like-button_is-active");
+};
 
-  const title = card.querySelector(titleContainer);
-  title.textContent = cardTitle;
-  
-  console.log(card);
-  return card;
-
-  /* итого: проще возвращать карточку, а в нужном месте использовать append/prepend */
+export function deleteCard(e) {
+  const cardElement = e.currentTarget.closest(".card");
+  cardElement.remove();
 }
 
-export function deleteCard(cardElement) {
-  cardElement.remove();
+export function createCard(name, link, likeHandler, deleteHandler) {
+  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", likeHandler);
+
+  const deleteButton = cardElement.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", deleteHandler);
+
+  const cardTitle = cardElement.querySelector(".card__title");
+  cardTitle.textContent = name;
+  
+  const cardImage = cardElement.querySelector(".card__image");
+  cardImage.src = link;
+  cardImage.alt = `Изображение места ${name}`;
+
+  return cardElement;
 }
 

@@ -2,6 +2,7 @@ const isOpened = "popup_is-opened";
 
 export function openDialog(dialog) {
   dialog.classList.add(isOpened);
+
   const handler = escapeHandler(dialog);
   dialog._handler = handler;
 
