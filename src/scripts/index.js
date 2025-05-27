@@ -12,30 +12,45 @@ document.querySelector('.logo').src = logo;
 
 /* карточки */
 
+const imageDialog = document.querySelector(".popup_type_image");
+const dialogImage = imageDialog.querySelector(".popup__image");
+const dialogCaption = imageDialog.querySelector(".popup__caption");
+
+function openImageDialog(name, link) {
+  return function (e) {
+    if (!e.target.matches('.card__image')) return;
+    dialogImage.src = link;
+    dialogImage.alt = name;
+    dialogCaption.textContent = name;
+    openDialog(imageDialog);
+  };
+}
+
 const cardsContainer = document.querySelector(".places__list");
 
 (function initCards() {
     initialCards.forEach((card) => {
         const _card = createCard(card.name, card.link, likeCard, deleteCard);
+        _card.addEventListener("click", openImageDialog(card.name, card.link));
         cardsContainer.append(_card);
     })
-}());
+}()); 
 
-const addCardPopup = document.querySelector(".popup_type_new-card");
-const addCardPopupButtonOpen = document.querySelector(".profile__add-button");
+const addCardDialog = document.querySelector(".popup_type_new-card");
+const addCardDialogButtonOpen = document.querySelector(".profile__add-button");
 
 /* редактирование профиля */
 
-const editProfilePopup = document.querySelector(".popup_type_edit");
-const editProfilePopupButtonOpen = document.querySelector(".profile__edit-button");
+const editProfileDialog = document.querySelector(".popup_type_edit");
+const editProfileDialogButtonOpen = document.querySelector(".profile__edit-button");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-const editProfieForm = editProfilePopup.querySelector(".popup__form");
+const editProfieForm = editProfileDialog.querySelector(".popup__form");
 
-editProfilePopupButtonOpen.addEventListener("click", () => {
-    openDialog(editProfilePopup);
+editProfileDialogButtonOpen.addEventListener("click", () => {
+    openDialog(editProfileDialog);
     editProfieForm.elements.name.value = profileTitle.textContent;
     editProfieForm.elements.description.value = profileDescription.textContent;
 })
@@ -49,16 +64,16 @@ editProfieForm.addEventListener("submit", (e) => {
     profileTitle.textContent = name;
     profileDescription.textContent = description;
 
-    closeDialog(editProfilePopup);
+    closeDialog(editProfileDialog);
 })
 
 /* конец редактирования профиля */
 
-addCardPopupButtonOpen.addEventListener("click", () => {
-    openDialog(addCardPopup);
+addCardDialogButtonOpen.addEventListener("click", () => {
+    openDialog(addCardDialog);
 })
 
-const createCardForm = addCardPopup.querySelector(".popup__form");
+const createCardForm = addCardDialog.querySelector(".popup__form");
 
 createCardForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -67,9 +82,10 @@ createCardForm.addEventListener("submit", (e) => {
     const imageLink = createCardForm.elements["link"].value;
 
     const _card = createCard(placeName, imageLink, likeCard, deleteCard);
+    _card.addEventListener("click", openImageDialog(placeName, imageLink));
     cardsContainer.prepend(_card);
 
-    closeDialog(addCardPopup);
+    closeDialog(addCardDialog);
     createCardForm.reset();
 });
 
