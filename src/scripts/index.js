@@ -10,8 +10,6 @@ import { openDialog, closeDialog } from "./modal.js";
 document.querySelector('.profile__image').style.backgroundImage = `url(${avatar})`;
 document.querySelector('.logo').src = logo;
 
-/* карточки */
-
 const imageDialog = document.querySelector(".popup_type_image");
 const dialogImage = imageDialog.querySelector(".popup__image");
 const dialogCaption = imageDialog.querySelector(".popup__caption");
@@ -36,46 +34,21 @@ const cardsContainer = document.querySelector(".places__list");
     })
 }()); 
 
-const addCardDialog = document.querySelector(".popup_type_new-card");
-const addCardDialogButtonOpen = document.querySelector(".profile__add-button");
+const cardDialog = document.querySelector(".popup_type_new-card");
+const cardDialogButton = document.querySelector(".profile__add-button");
 
-/* редактирование профиля */
+const cardDialogInputs = cardDialog.querySelectorAll(".popup__input");
 
-const editProfileDialog = document.querySelector(".popup_type_edit");
-const editProfileDialogButtonOpen = document.querySelector(".profile__edit-button");
-
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-
-const editProfieForm = editProfileDialog.querySelector(".popup__form");
-
-editProfileDialogButtonOpen.addEventListener("click", () => {
-    openDialog(editProfileDialog);
-    editProfieForm.elements.name.value = profileTitle.textContent;
-    editProfieForm.elements.description.value = profileDescription.textContent;
+cardDialogButton.addEventListener("click", () => {
+    cardDialogInputs.forEach((input) => {
+        input.value = ''
+    });
+    openDialog(cardDialog);
 })
 
-editProfieForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+const createCardForm = cardDialog.querySelector(".popup__form");
 
-    const name = editProfieForm.elements.name.value;
-    const description = editProfieForm.elements.description.value;
-
-    profileTitle.textContent = name;
-    profileDescription.textContent = description;
-
-    closeDialog(editProfileDialog);
-})
-
-/* конец редактирования профиля */
-
-addCardDialogButtonOpen.addEventListener("click", () => {
-    openDialog(addCardDialog);
-})
-
-const createCardForm = addCardDialog.querySelector(".popup__form");
-
-createCardForm.addEventListener("submit", (e) => {
+function createCardFormHandler(e) {
     e.preventDefault();
 
     const placeName = createCardForm.elements["place-name"].value;
@@ -85,7 +58,51 @@ createCardForm.addEventListener("submit", (e) => {
     _card.addEventListener("click", openImageDialog(placeName, imageLink));
     cardsContainer.prepend(_card);
 
-    closeDialog(addCardDialog);
+    closeDialog(cardDialog);
     createCardForm.reset();
-});
+}
+
+createCardForm.addEventListener("submit", createCardFormHandler);
+
+/*  */
+
+const profileDialog = document.querySelector(".popup_type_edit");
+const profileDialogButton = document.querySelector(".profile__edit-button");
+
+const profileTitle = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+
+const profieForm = profileDialog.querySelector(".popup__form");
+
+profileDialogButton.addEventListener("click", () => {
+    openDialog(profileDialog);
+    profieForm.elements.name.value = profileTitle.textContent;
+    profieForm.elements.description.value = profileDescription.textContent;
+})
+
+function profileFormHandler(e) {
+    e.preventDefault();
+
+    const name = profieForm.elements.name.value;
+    const description = profieForm.elements.description.value;
+
+    profileTitle.textContent = name;
+    profileDescription.textContent = description;
+
+    closeDialog(profileDialog);
+}
+
+profieForm.addEventListener("submit", profileFormHandler);
+
+const dialogs = [imageDialog, cardDialog, profileDialog];
+dialogs.forEach((dialog) => {
+    const closeButton = dialog.querySelector(".popup__close");
+    closeButton.addEventListener("click", () => closeDialog(dialog));
+
+    dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) {
+            closeDialog(dialog);
+        }
+    })
+})
 
