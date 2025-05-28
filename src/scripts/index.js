@@ -4,7 +4,7 @@ import "../styles/pages/index.css";
 
 import { initialCards } from "./cards.js";
 import { createCard, likeCard, deleteCard } from "./card.js";
-import { openDialog, closeDialog, overlayClickHandler } from "./modal.js";
+import { openDialog, closeDialog, closeDialogByOverlayClick } from "./modal.js";
 
 document.querySelector(
   ".profile__image"
@@ -28,7 +28,7 @@ const profileDialogButton = document.querySelector(".profile__edit-button");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-const profieForm = profileDialog.querySelector(".popup__form");
+const profileForm = profileDialog.querySelector(".popup__form");
 
 const dialogs = [imageDialog, cardDialog, profileDialog];
 
@@ -80,15 +80,15 @@ createCardForm.addEventListener("submit", handleCreateCardSubmit);
 
 profileDialogButton.addEventListener("click", () => {
   openDialog(profileDialog);
-  profieForm.elements.name.value = profileTitle.textContent;
-  profieForm.elements.description.value = profileDescription.textContent;
+  profileForm.elements.name.value = profileTitle.textContent;
+  profileForm.elements.description.value = profileDescription.textContent;
 });
 
 function handleProfileFormSubmit(e) {
   e.preventDefault();
 
-  const name = profieForm.elements.name.value;
-  const description = profieForm.elements.description.value;
+  const name = profileForm.elements.name.value;
+  const description = profileForm.elements.description.value;
 
   profileTitle.textContent = name;
   profileDescription.textContent = description;
@@ -96,13 +96,13 @@ function handleProfileFormSubmit(e) {
   closeDialog(profileDialog);
 }
 
-profieForm.addEventListener("submit", handleProfileFormSubmit);
+profileForm.addEventListener("submit", handleProfileFormSubmit);
 
 dialogs.forEach((dialog) => {
   const closeButton = dialog.querySelector(".popup__close");
   closeButton.addEventListener("click", () => closeDialog(dialog));
 
-  dialog.addEventListener("click", overlayClickHandler(dialog));
+  dialog.addEventListener("click", closeDialogByOverlayClick(dialog));
 });
 
-/* сделать общий рефакторинг */
+/* строки 36, 37, 47, 67 осталось поправить */

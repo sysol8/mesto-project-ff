@@ -3,22 +3,22 @@ const isOpened = "popup_is-opened";
 export function openDialog(dialog) {
   dialog.classList.add(isOpened);
 
-  const handler = escapeHandler(dialog);
-  dialog._handler = handler;
+  const keyHandler = closeDialogByKey(dialog);
+  dialog._keyHandler = keyHandler;
 
-  window.addEventListener("keydown", handler);
+  document.addEventListener("keydown", keyHandler);
 }
 
 export function closeDialog(dialog) {
-  if (dialog._handler) {
-    window.removeEventListener("keydown", dialog._handler);
-    delete dialog._handler;
+  if (dialog._keyHandler) {
+    document.removeEventListener("keydown", dialog._keyHandler);
+    delete dialog._keyHandler;
   }
 
   dialog.classList.remove(isOpened);
 }
 
-export function overlayClickHandler(dialog) {
+export function closeDialogByOverlayClick(dialog) {
   return function (e) {
     if (e.target === dialog) {
       closeDialog(dialog);
@@ -26,7 +26,7 @@ export function overlayClickHandler(dialog) {
   };
 }
 
-function escapeHandler(dialog) {
+function closeDialogByKey(dialog) {
   return function (e) {
     if (e.key === "Escape") {
       closeDialog(dialog);
