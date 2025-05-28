@@ -14,8 +14,16 @@ export function closeDialog(dialog) {
     window.removeEventListener("keydown", dialog._handler);
     delete dialog._handler;
   }
-  
+
   dialog.classList.remove(isOpened);
+}
+
+export function overlayClickHandler(dialog) {
+  return function (e) {
+    if (e.target === dialog) {
+      closeDialog(dialog);
+    }
+  }
 }
 
 function escapeHandler(dialog) {
@@ -25,3 +33,5 @@ function escapeHandler(dialog) {
     }
   };
 }
+
+/* обработчик клика по оверлею перенести сюда */
