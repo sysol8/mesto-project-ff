@@ -23,7 +23,7 @@ export function overlayClickHandler(dialog) {
     if (e.target === dialog) {
       closeDialog(dialog);
     }
-  }
+  };
 }
 
 function escapeHandler(dialog) {
@@ -33,5 +33,3 @@ function escapeHandler(dialog) {
     }
   };
 }
-
-/* обработчик клика по оверлею перенести сюда */

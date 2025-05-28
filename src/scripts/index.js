@@ -6,7 +6,9 @@ import { initialCards } from "./cards.js";
 import { createCard, likeCard, deleteCard } from "./card.js";
 import { openDialog, closeDialog, overlayClickHandler } from "./modal.js";
 
-document.querySelector(".profile__image").style.backgroundImage = `url(${avatar})`;
+document.querySelector(
+  ".profile__image"
+).style.backgroundImage = `url(${avatar})`;
 document.querySelector(".logo").src = logo;
 
 const imageDialog = document.querySelector(".popup_type_image");
@@ -17,7 +19,6 @@ const cardsContainer = document.querySelector(".places__list");
 
 const cardDialog = document.querySelector(".popup_type_new-card");
 const cardDialogButton = document.querySelector(".profile__add-button");
-const cardDialogInputs = cardDialog.querySelectorAll(".popup__input");
 
 const createCardForm = cardDialog.querySelector(".popup__form");
 
@@ -56,9 +57,7 @@ function openImageDialog(name, link) {
 })();
 
 cardDialogButton.addEventListener("click", () => {
-  cardDialogInputs.forEach((input) => {
-    input.value = "";
-  });
+  createCardForm.reset();
   openDialog(cardDialog);
 });
 
