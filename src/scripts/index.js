@@ -22,6 +22,9 @@ const cardDialogButton = document.querySelector(".profile__add-button");
 
 const createCardForm = cardDialog.querySelector(".popup__form");
 
+const placeNameInput = createCardForm.elements["place-name"];
+const imageLinkInput = createCardForm.elements["link"];
+
 const profileDialog = document.querySelector(".popup_type_edit");
 const profileDialogButton = document.querySelector(".profile__edit-button");
 
@@ -30,27 +33,26 @@ const profileDescription = document.querySelector(".profile__description");
 
 const profileForm = profileDialog.querySelector(".popup__form");
 
+let profileNameInput = profileForm.elements.name;
+let profileDescriptionInput = profileForm.elements.description;
+
 const dialogs = [imageDialog, cardDialog, profileDialog];
 
 function openImageDialog(name, link) {
-  return function (e) {
-    if (!e.target.matches(".card__image")) return;
     dialogImage.src = link;
     dialogImage.alt = name;
     dialogCaption.textContent = name;
     openDialog(imageDialog);
-  };
-}
+};
 
 (function initCards() {
   initialCards.forEach((card) => {
-    const handler = openImageDialog(card.name, card.link);
     const _card = createCard(
       card.name,
       card.link,
       likeCard,
       deleteCard,
-      handler
+      openImageDialog
     );
     cardsContainer.append(_card);
   });
@@ -64,12 +66,7 @@ cardDialogButton.addEventListener("click", () => {
 function handleCreateCardSubmit(e) {
   e.preventDefault();
 
-  const placeName = createCardForm.elements["place-name"].value;
-  const imageLink = createCardForm.elements["link"].value;
-
-  const handler = openImageDialog(placeName, imageLink);
-
-  const _card = createCard(placeName, imageLink, likeCard, deleteCard, handler);
+  const _card = createCard(placeNameInput.value, imageLinkInput.value, likeCard, deleteCard, openImageDialog);
   cardsContainer.prepend(_card);
 
   closeDialog(cardDialog);
@@ -80,18 +77,15 @@ createCardForm.addEventListener("submit", handleCreateCardSubmit);
 
 profileDialogButton.addEventListener("click", () => {
   openDialog(profileDialog);
-  profileForm.elements.name.value = profileTitle.textContent;
-  profileForm.elements.description.value = profileDescription.textContent;
+  profileNameInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
 });
 
 function handleProfileFormSubmit(e) {
   e.preventDefault();
 
-  const name = profileForm.elements.name.value;
-  const description = profileForm.elements.description.value;
-
-  profileTitle.textContent = name;
-  profileDescription.textContent = description;
+  profileTitle.textContent = profileNameInput.value;
+  profileDescription.textContent = profileDescriptionInput.value;
 
   closeDialog(profileDialog);
 }

@@ -31,7 +31,7 @@ export function createCard(
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = link;
   cardImage.alt = `Изображение места ${name}`;
-  cardImage.addEventListener("click", imageClickHandler);
+  cardImage.addEventListener("click", () => imageClickHandler(name, link));
 
   return cardElement;
 }
