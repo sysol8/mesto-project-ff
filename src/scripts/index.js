@@ -33,8 +33,8 @@ const profileDescription = document.querySelector(".profile__description");
 
 const profileForm = profileDialog.querySelector(".popup__form");
 
-let profileNameInput = profileForm.elements.name;
-let profileDescriptionInput = profileForm.elements.description;
+const profileNameInput = profileForm.elements.name;
+const profileDescriptionInput = profileForm.elements.description;
 
 const dialogs = [imageDialog, cardDialog, profileDialog];
 
