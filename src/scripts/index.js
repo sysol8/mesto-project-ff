@@ -5,10 +5,11 @@ import "../styles/pages/index.css";
 import { initialCards } from "./cards.js";
 import { createCard, likeCard, deleteCard } from "./card.js";
 import { openDialog, closeDialog, closeDialogByOverlayClick } from "./modal.js";
+import { getUserData, getInitialCards } from "./api";
 
-document.querySelector(
-  ".profile__image"
-).style.backgroundImage = `url(${avatar})`;
+await Promise.all([getUserData(), getInitialCards()]);
+
+document.querySelector(".profile__image").style.backgroundImage = `url(${avatar})`;
 document.querySelector(".logo").src = logo;
 
 const imageDialog = document.querySelector(".popup_type_image");
@@ -39,11 +40,11 @@ const profileDescriptionInput = profileForm.elements.description;
 const dialogs = [imageDialog, cardDialog, profileDialog];
 
 function openImageDialog(name, link) {
-    dialogImage.src = link;
-    dialogImage.alt = name;
-    dialogCaption.textContent = name;
-    openDialog(imageDialog);
-};
+  dialogImage.src = link;
+  dialogImage.alt = name;
+  dialogCaption.textContent = name;
+  openDialog(imageDialog);
+}
 
 (function initCards() {
   initialCards.forEach((card) => {
@@ -52,7 +53,7 @@ function openImageDialog(name, link) {
       card.link,
       likeCard,
       deleteCard,
-      openImageDialog
+      openImageDialog,
     );
     cardsContainer.append(_card);
   });
@@ -66,7 +67,13 @@ cardDialogButton.addEventListener("click", () => {
 function handleCreateCardSubmit(e) {
   e.preventDefault();
 
-  const _card = createCard(placeNameInput.value, imageLinkInput.value, likeCard, deleteCard, openImageDialog);
+  const _card = createCard(
+    placeNameInput.value,
+    imageLinkInput.value,
+    likeCard,
+    deleteCard,
+    openImageDialog,
+  );
   cardsContainer.prepend(_card);
 
   closeDialog(cardDialog);
@@ -98,5 +105,3 @@ dialogs.forEach((dialog) => {
 
   dialog.addEventListener("click", closeDialogByOverlayClick(dialog));
 });
-
-/* строки 36, 37, 47, 67 осталось поправить */
