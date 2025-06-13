@@ -105,3 +105,7 @@ dialogs.forEach((dialog) => {
 
   dialog.addEventListener("click", closeDialogByOverlayClick(dialog));
 });
+
+import { enableValidation } from "./validation";
+
+enableValidation();

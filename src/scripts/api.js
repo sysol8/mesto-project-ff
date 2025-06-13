@@ -23,8 +23,8 @@ export function getUserData() {
     .then((result) => {
       console.log(result);
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(`Ошибка: ${error}`);
     });
 }
 
