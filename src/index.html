@@ -50,7 +50,7 @@
               placeholder="Имя"
               maxlength="40"
               minlength="2"
-              pattern="^[А-Яа-яA-Za-z\s\-]+$"
+              pattern="^[А-Яа-яA-Za-z\s\-]{2,40}"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
               id="name"
               required
@@ -63,7 +63,7 @@
               placeholder="Занятие"
               maxlength="200"
               minlength="2"
-              pattern="^[А-Яа-яA-Za-z\s\-]+$"
+              pattern="^[А-Яа-яA-Za-z\s\-]{2,200}"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
               required
               id="description"
@@ -79,17 +79,18 @@
         <div class="popup__content">
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Новое место</h3>
-          <form class="popup__form" name="new-place">
+          <form class="popup__form" name="new-place" novalidate>
             <input
               type="text"
               name="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
               minlength="2"
-              maxlength="40"
-              pattern="^[А-Яа-яA-Za-z\s\-]"
+              maxlength="30"
+              pattern="^[А-Яа-яA-Za-z\s\-]{2,30}"
               data-error-text="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
+              id="place-name"
             />
             <span class="popup__input-error place-name-error"></span>
             <input
@@ -97,7 +98,9 @@
               name="link"
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на картинку"
+              pattern="/^http(s):\/\/[А-Яа-яA-Za-z0-9\s\-]+\.[А-Яа-яA-Za-z0-9\s\-]+\/$/gm"
               required
+              id="url"
             />
             <span class="popup__input-error url-error"></span>
             <button type="submit" class="button popup__button">

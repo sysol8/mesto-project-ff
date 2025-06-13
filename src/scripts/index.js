@@ -6,6 +6,7 @@ import { initialCards } from "./cards.js";
 import { createCard, likeCard, deleteCard } from "./card.js";
 import { openDialog, closeDialog, closeDialogByOverlayClick } from "./modal.js";
 import { getUserData, getInitialCards } from "./api";
+import { enableValidation, resetValidation } from "./validation";
 
 await Promise.all([getUserData(), getInitialCards()]);
 
@@ -61,6 +62,7 @@ function openImageDialog(name, link) {
 
 cardDialogButton.addEventListener("click", () => {
   createCardForm.reset();
+  resetValidation(createCardForm);
   openDialog(cardDialog);
 });
 
@@ -86,6 +88,7 @@ profileDialogButton.addEventListener("click", () => {
   openDialog(profileDialog);
   profileNameInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
+  resetValidation(profileForm);
 });
 
 function handleProfileFormSubmit(e) {
@@ -105,7 +108,5 @@ dialogs.forEach((dialog) => {
 
   dialog.addEventListener("click", closeDialogByOverlayClick(dialog));
 });
-
-import { enableValidation } from "./validation";
 
 enableValidation();

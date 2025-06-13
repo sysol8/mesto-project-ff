@@ -12,7 +12,7 @@ function hideError(formElement, inputElement) {
   errorElement.textContent = "";
 }
 
-function checkValidity(formElement, inputElement) {
+function checkInputValidity(formElement, inputElement) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -26,12 +26,30 @@ function checkValidity(formElement, inputElement) {
   }
 }
 
+function checkForInvalidInputs(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  if (checkForInvalidInputs(inputList)) {
+    buttonElement.disabled = true;
+    buttonElement.classList.add("popup__button_disabled");
+  } else {
+    buttonElement.disabled = false;
+    buttonElement.classList.remove("popup__button_disabled");
+  }
+}
+
 function setEventListeners(formElement) {
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-  const submitButton = formElement.querySelector(".popup__button");
+  const buttonElement = formElement.querySelector(".popup__button");
+  toggleButtonState(inputList, buttonElement);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", function () {
-      checkValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+      checkInputValidity(formElement, inputElement);
     });
   });
 }
@@ -46,4 +64,16 @@ export function enableValidation() {
   formList.forEach((formElement) => {
     setEventListeners(formElement);
   });
+}
+
+export function resetValidation(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  const buttonElement = formElement.querySelector(".popup__button");
+
+  inputList.forEach((inputElement) => {
+    hideError(formElement, inputElement);
+    inputElement.setCustomValidity("");
+  });
+
+  toggleButtonState(inputList, buttonElement);
 }
