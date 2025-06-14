@@ -9,7 +9,7 @@ const config = {
   },
 };
 
-export function getUserData() {
+export const getUserData = () => {
   return fetch(`${config.baseURL}/users/me`, {
     method: "GET",
     headers: config.headers,
@@ -21,14 +21,14 @@ export function getUserData() {
       return response.json();
     })
     .then((result) => {
-      console.log(result);
+      return result;
     })
     .catch((error) => {
       console.log(`Ошибка: ${error}`);
     });
-}
+};
 
-export function getInitialCards() {
+export const getInitialCards = () => {
   return fetch(`${config.baseURL}/cards`, {
     method: "GET",
     headers: config.headers,
@@ -40,7 +40,53 @@ export function getInitialCards() {
       return response.json();
     })
     .then((result) => {
-      console.log(result);
+      return result;
+    })
+    .catch((error) => {
+      console.log(`Ошибка: ${error}`);
+    });
+};
+
+export const editProfile = (nameInputValue, descriptionInputValue) => {
+  return fetch(`${config.baseURL}/users/me`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      name: nameInputValue,
+      about: descriptionInputValue,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return Promise.reject(response.status);
+      }
+      return response.json();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((error) => {
+      console.log(`Ошибка: ${error}`);
+    });
+};
+
+export const addCard = (cardName, imageLink) => {
+  return fetch(`${config.baseURL}/cards`, {
+    method: "POST",
+    headers: config.headers,
+    body: JSON.stringify({
+      name: cardName,
+      link: imageLink,
+    })
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return Promise.reject(response.status);
+      }
+      return response.json();
+    })
+    .then((result) => {
+      return result;
     })
     .catch((error) => {
       console.log(`Ошибка: ${error}`);

@@ -33,3 +33,5 @@ function closeDialogByKey(dialog) {
     }
   };
 }
+
+function setLoading(dialog) {}

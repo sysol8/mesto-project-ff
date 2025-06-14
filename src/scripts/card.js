@@ -11,8 +11,8 @@ export function deleteCard(e) {
 }
 
 export function createCard(
-  name,
-  link,
+  cardData,
+  userId,
   likeHandler,
   deleteHandler,
   imageClickHandler
@@ -22,16 +22,25 @@ export function createCard(
   const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", likeHandler);
 
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", deleteHandler);
+  const likesCounterElement = cardElement.querySelector(".likes-counter");
+  const likes = cardData.likes.length;
+  likesCounterElement.textContent = likes;
 
+  const deleteButton = cardElement.querySelector(".card__delete-button");
+  if (cardData.owner._id !== userId) {
+    deleteButton.style.display = "none";
+  } else {
+    deleteButton.addEventListener("click", deleteHandler);
+  }
   const cardTitle = cardElement.querySelector(".card__title");
-  cardTitle.textContent = name;
+  cardTitle.textContent = cardData.name;
 
   const cardImage = cardElement.querySelector(".card__image");
-  cardImage.src = link;
-  cardImage.alt = `Изображение места ${name}`;
-  cardImage.addEventListener("click", () => imageClickHandler(name, link));
+  cardImage.src = cardData.link;
+  cardImage.alt = `Изображение места ${cardData.name}`;
+  cardImage.addEventListener("click", () => imageClickHandler(cardData.name, cardData.link));
+
+  console.log('Card owner:', cardData.owner._id, 'Current user:', userId);
 
   return cardElement;
 }
