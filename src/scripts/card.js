@@ -1,3 +1,9 @@
+import {
+  deleteCard as apiDeleteCard,
+  likeCard as apiLikeCard,
+  unlikeCard as apiUnlikeCard,
+} from "./api";
+
 const cardTemplate = document.querySelector("#card-template").content;
 
 export function likeCard(e) {
@@ -5,9 +11,16 @@ export function likeCard(e) {
   likeButton.classList.toggle("card__like-button_is-active");
 }
 
-export function deleteCard(e) {
+export function removeCard(e) {
   const cardElement = e.currentTarget.closest(".card");
-  cardElement.remove();
+  const cardId = cardElement.dataset.id;
+  apiDeleteCard(cardId)
+    .then(() => {
+      cardElement.remove();
+    })
+    .catch((error) => {
+      console.log(`Ошибка при удалении карточки: ${error}`);
+    });
 }
 
 export function createCard(
@@ -15,9 +28,10 @@ export function createCard(
   userId,
   likeHandler,
   deleteHandler,
-  imageClickHandler
+  imageClickHandler,
 ) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+  cardElement.dataset.id = cardData._id;
 
   const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", likeHandler);
@@ -38,9 +52,9 @@ export function createCard(
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = cardData.link;
   cardImage.alt = `Изображение места ${cardData.name}`;
-  cardImage.addEventListener("click", () => imageClickHandler(cardData.name, cardData.link));
-
-  console.log('Card owner:', cardData.owner._id, 'Current user:', userId);
+  cardImage.addEventListener("click", () =>
+    imageClickHandler(cardData.name, cardData.link),
+  );
 
   return cardElement;
 }

@@ -7,6 +7,25 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  position: relative;
+}
+
+.profile__image:hover .profile__edit-image-button {
+  display: block;
+}
+
+.profile__edit-image-button {
+  position: absolute;
+  border: none;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  display: none;
+}
+
+.edit-image-icon {
+  width: 26px;
+  height: 26px;
 }
 
 @media screen and (max-width: 740px) {
@@ -20,3 +39,5 @@
     margin-right: 0;
   }
 }
+
+
