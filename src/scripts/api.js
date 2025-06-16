@@ -5,13 +5,13 @@ const config = {
   baseURL: `https://nomoreparties.co/v1/${id}`,
   headers: {
     authorization: token,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 };
 
 export const getUserData = () => {
   return fetch(`${config.baseURL}/users/me`, {
-    method: "GET",
+    method: 'GET',
     headers: config.headers,
   })
     .then((response) => {
@@ -30,7 +30,7 @@ export const getUserData = () => {
 
 export const getInitialCards = () => {
   return fetch(`${config.baseURL}/cards`, {
-    method: "GET",
+    method: 'GET',
     headers: config.headers,
   })
     .then((response) => {
@@ -49,7 +49,7 @@ export const getInitialCards = () => {
 
 export const editProfile = (nameInputValue, descriptionInputValue) => {
   return fetch(`${config.baseURL}/users/me`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       name: nameInputValue,
@@ -72,7 +72,7 @@ export const editProfile = (nameInputValue, descriptionInputValue) => {
 
 export const editAvatar = (avatarUrlInputValue) => {
   return fetch(`${config.baseURL}/users/me/avatar`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       avatar: avatarUrlInputValue,
@@ -94,7 +94,7 @@ export const editAvatar = (avatarUrlInputValue) => {
 
 export const addCard = (cardName, imageLink) => {
   return fetch(`${config.baseURL}/cards`, {
-    method: "POST",
+    method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
       name: cardName,
@@ -117,7 +117,7 @@ export const addCard = (cardName, imageLink) => {
 
 export const deleteCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/${cardId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: config.headers,
   })
     .then((response) => {
@@ -136,7 +136,7 @@ export const deleteCard = (cardId) => {
 
 export const likeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
-    method: "PUT",
+    method: 'PUT',
     headers: config.headers,
   })
     .then((response) => {
@@ -155,7 +155,7 @@ export const likeCard = (cardId) => {
 
 export const unlikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: config.headers,
   })
     .then((response) => {
@@ -171,3 +171,5 @@ export const unlikeCard = (cardId) => {
       console.log(`Ошибка: ${error}`);
     });
 };
+
+//
