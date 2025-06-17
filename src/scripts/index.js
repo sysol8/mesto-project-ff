@@ -237,6 +237,3 @@ dialogs.forEach((dialog) => {
 });
 
 enableValidation(validationSettings);
-
-/* Сделать рефакторинг, проверить названия переменных, поправить
-код в хендлерах сабмита как в handleAvatarFormSubmit */
