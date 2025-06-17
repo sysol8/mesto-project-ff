@@ -124,6 +124,7 @@ cardDialogButton.addEventListener('click', () => {
 });
 
 function handleCreateCardSubmit(e) {
+  e.preventDefault()
   const name = placeNameInput.value;
   const link = imageLinkInput.value;
   setButtonLoading(createCardFormSubmitButton, true);
@@ -187,6 +188,7 @@ profileDialogButton.addEventListener('click', () => {
 });
 
 function handleProfileFormSubmit(e) {
+  e.preventDefault();
   const newName = profileNameInput.value;
   const newDescription = profileDescriptionInput.value;
 
@@ -212,7 +214,8 @@ avatarDialogButton.addEventListener('click', () => {
   openDialog(avatarDialog);
 });
 
-function handleAvatarFormSubmit() {
+function handleAvatarFormSubmit(e) {
+  e.preventDefault();
   const newAvatar = avatarUrlInput.value;
   setButtonLoading(avatarFormSubmitButton, true);
   editAvatar(newAvatar)
@@ -237,3 +240,5 @@ dialogs.forEach((dialog) => {
 });
 
 enableValidation(validationSettings);
+
+// ошибки в index.js, card.js, api.js + в большом комменте

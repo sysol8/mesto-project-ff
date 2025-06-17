@@ -43,8 +43,6 @@ export function enableValidation({
   const formList = Array.from(document.querySelectorAll(formSelector));
 
   formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (e) => e.preventDefault());
-
     const inputList = Array.from(formElement.querySelectorAll(inputSelector));
     const buttonElement = formElement.querySelector(submitButtonSelector);
 
