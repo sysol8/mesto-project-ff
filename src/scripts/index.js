@@ -22,7 +22,8 @@ const validationSettings = {
 };
 
 const avatarElement = document.querySelector('.profile__image');
-document.querySelector('.logo').src = logo;
+const logoElement = document.querySelector('.logo');
+logoElement.src = logo;
 
 const imageDialog = document.querySelector('.popup_type_image');
 const dialogImage = imageDialog.querySelector('.popup__image');
@@ -34,9 +35,7 @@ const cardDialog = document.querySelector('.popup_type_new-card');
 const cardDialogButton = document.querySelector('.profile__add-button');
 
 const createCardForm = cardDialog.querySelector('.popup__form');
-const createCardFormSubmitButton =
-  createCardForm.querySelector('.popup__button');
-
+const createCardFormSubmitButton = createCardForm.querySelector('.popup__button');
 const placeNameInput = createCardForm.elements['place-name'];
 const imageLinkInput = createCardForm.elements['link'];
 
@@ -73,28 +72,19 @@ const dialogs = [
   cardDeleteDialog,
 ];
 
-let cardToDeleteButton = null;
+const transitionTimeout = 600;
 
-function openCardDeleteDialog(e) {
-  cardToDeleteButton = e.currentTarget;
-  openDialog(cardDeleteDialog);
+function setButtonLoading(button, isLoading) {
+  if (isLoading) {
+    button.disabled = true;
+    button.textContent = 'Сохранение...';
+    button.classList.add('popup__button_disabled');
+  } else {
+    button.disabled = false;
+    button.textContent = 'Сохранить';
+    button.classList.remove('popup__button_disabled');
+  }
 }
-
-cardDeleteForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  setButtonLoading(cardDeleteFormSubmitButton, true);
-  removeCard(cardToDeleteButton)
-    .then(() => {
-      closeDialog(cardDeleteDialog);
-      cardToDeleteButton = null;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    })
-    .finally(() => {
-      setButtonLoading(cardDeleteFormSubmitButton, false);
-    });
-});
 
 let userId = null;
 
@@ -115,19 +105,10 @@ Promise.all([getUserData(), getInitialCards()]).then(([userData, cards]) => {
     );
     cardsContainer.append(card);
   });
-});
-
-function setButtonLoading(button, isLoading) {
-  if (isLoading) {
-    button.disabled = true;
-    button.textContent = 'Сохранение...';
-    button.classList.add('popup__button_disabled');
-  } else {
-    button.disabled = false;
-    button.textContent = 'Сохранить';
-    button.classList.remove('popup__button_disabled');
-  }
-}
+})
+  .catch((error) => {
+    console.error(`Ошибка: ${error}`);
+  });
 
 function openImageDialog(name, link) {
   dialogImage.src = link;
@@ -155,26 +136,54 @@ function handleCreateCardSubmit(e) {
         openCardDeleteDialog,
         openImageDialog,
       );
+      setTimeout(() => setButtonLoading(createCardFormSubmitButton, false), transitionTimeout)
 
       cardsContainer.prepend(_card);
       closeDialog(cardDialog);
-      createCardForm.reset();
     })
     .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    })
-    .finally(() => {
+      console.error(`Ошибка: ${error}`);
       setButtonLoading(createCardFormSubmitButton, false);
-    });
+    })
 }
 
 createCardForm.addEventListener('submit', handleCreateCardSubmit);
 
+let cardToDeleteButton = null;
+
+function openCardDeleteDialog(e) {
+  cardToDeleteButton = e.currentTarget;
+  openDialog(cardDeleteDialog);
+}
+
+cardDeleteForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  cardDeleteFormSubmitButton.textContent = 'Удаление...';
+  cardDeleteFormSubmitButton.disabled = true;
+  cardDeleteFormSubmitButton.classList.add('popup__button_disabled');
+  removeCard(cardToDeleteButton)
+    .then(() => {
+      cardToDeleteButton = null;
+      closeDialog(cardDeleteDialog);
+      setTimeout(() => {
+        cardDeleteFormSubmitButton.textContent = 'Да';
+        cardDeleteFormSubmitButton.disabled = false;
+        cardDeleteFormSubmitButton.classList.remove('popup__button_disabled');
+      }, transitionTimeout)
+    })
+    .catch((error) => {
+      console.error(`Ошибка: ${error}`);
+      cardDeleteFormSubmitButton.textContent = 'Да';
+      cardDeleteFormSubmitButton.disabled = false;
+      cardDeleteFormSubmitButton.classList.remove('popup__button_disabled');
+    })
+});
+
 profileDialogButton.addEventListener('click', () => {
-  openDialog(profileDialog);
   profileNameInput.value = profileName.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
   resetValidation(profileForm, validationSettings);
+  openDialog(profileDialog);
 });
 
 function handleProfileFormSubmit(e) {
@@ -183,33 +192,24 @@ function handleProfileFormSubmit(e) {
 
   setButtonLoading(profileFormSubmitButton, true);
   editProfile(newName, newDescription)
-    .then(() => {
-      profileName.textContent = newName;
-      profileDescription.textContent = newDescription;
+    .then((result) => {
+      profileName.textContent = result.name;
+      profileDescription.textContent = result.about;
+      closeDialog(profileDialog);
+      setTimeout(() => setButtonLoading(profileFormSubmitButton, false), transitionTimeout);
     })
     .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    })
-    .finally(() => {
+      console.error(`Ошибка: ${error}`);
       setButtonLoading(profileFormSubmitButton, false);
     });
-
-  closeDialog(profileDialog);
 }
 
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 
-dialogs.forEach((dialog) => {
-  const closeButton = dialog.querySelector('.popup__close');
-  closeButton.addEventListener('click', () => closeDialog(dialog));
-
-  dialog.addEventListener('click', closeDialogByOverlayClick(dialog));
-});
-
 avatarDialogButton.addEventListener('click', () => {
-  avatarUrlInput.value = '';
-  openDialog(avatarDialog);
+  avatarForm.reset();
   resetValidation(avatarForm, validationSettings);
+  openDialog(avatarDialog);
 });
 
 function handleAvatarFormSubmit() {
@@ -219,15 +219,22 @@ function handleAvatarFormSubmit() {
     .then(() => {
       avatarElement.style.backgroundImage = `url(${newAvatar})`;
       closeDialog(avatarDialog);
-      setTimeout(() => setButtonLoading(avatarFormSubmitButton, false), 600);
+      setTimeout(() => setButtonLoading(avatarFormSubmitButton, false), transitionTimeout);
     })
     .catch((error) => {
-      console.log(`Ошибка: ${error}`);
+      console.error(`Ошибка: ${error}`);
       setButtonLoading(avatarFormSubmitButton, false);
     });
 }
 
 avatarForm.addEventListener('submit', handleAvatarFormSubmit);
+
+dialogs.forEach((dialog) => {
+  const closeButton = dialog.querySelector('.popup__close');
+  closeButton.addEventListener('click', () => closeDialog(dialog));
+
+  dialog.addEventListener('click', closeDialogByOverlayClick(dialog));
+});
 
 enableValidation(validationSettings);
 
