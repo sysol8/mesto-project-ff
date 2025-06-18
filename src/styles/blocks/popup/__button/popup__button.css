@@ -20,7 +20,9 @@
 }
 
 .popup__button_disabled {
-  background: rgba(0, 0, 0, 0.8);
+  background: transparent;
+  color: #c4c4c4;
+  border: 1px solid #c4c4c4;
   pointer-events: none;
   cursor: none;
 }

@@ -9,42 +9,25 @@ const config = {
   },
 };
 
+function getResponseData(response) {
+  if (!response.ok) {
+    return Promise.reject(`Ошибка: ${response.status}`);
+  }
+  return response.json();
+}
+
 export const getUserData = () => {
   return fetch(`${config.baseURL}/users/me`, {
     method: 'GET',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const getInitialCards = () => {
   return fetch(`${config.baseURL}/cards`, {
     method: 'GET',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const editProfile = (nameInputValue, descriptionInputValue) => {
@@ -55,19 +38,7 @@ export const editProfile = (nameInputValue, descriptionInputValue) => {
       name: nameInputValue,
       about: descriptionInputValue,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const editAvatar = (avatarUrlInputValue) => {
@@ -77,19 +48,7 @@ export const editAvatar = (avatarUrlInputValue) => {
     body: JSON.stringify({
       avatar: avatarUrlInputValue,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const addCard = (cardName, imageLink) => {
@@ -100,76 +59,26 @@ export const addCard = (cardName, imageLink) => {
       name: cardName,
       link: imageLink,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const deleteCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const likeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
 
 export const unlikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(response.status);
-      }
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log(`Ошибка: ${error}`);
-    });
+  }).then(getResponseData);
 };
-
-//
